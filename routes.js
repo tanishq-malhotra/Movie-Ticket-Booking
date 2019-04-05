@@ -47,6 +47,7 @@ router.get('/get-images',function(req,res){
     });
 });
 
+//search movie
 router.post('/search-movie',function(req,res){
     var qry = 'select * from movie where mname='+'"'+req.body.mname+'"'+';';
     db.query(qry,function(err,result){
@@ -55,4 +56,15 @@ router.post('/search-movie',function(req,res){
         res.send(result);
     });
 });
+
+
+router.post('/book-data',function(req,res){
+    var id = req.body.mid;
+    var qry = 'select * from movie where mid='+id+';';
+    db.query(qry,function(err,result){
+        if(err) throw err;
+        res.send(result);
+    });
+});
+
 module.exports = router;
