@@ -18,7 +18,7 @@ function login()
        }
        else
        {
-        localStorage.setItem("id",data);
+        sessionStorage.setItem("id",data);
         window.location.href = machine + "/index.html";
        }
     }

@@ -1,8 +1,7 @@
 var machine = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
 function remove_tag()
 {
-    var a = localStorage.getItem("id");
-    console.log(a);
+    var a = sessionStorage.getItem("id");
     if(a)
     {
         $("#l").remove();
@@ -16,7 +15,6 @@ function remove_tag()
 function load()
 {
     remove_tag();
-    
        $.ajax({
             type:"GET",
             url: machine + "/get-images",
@@ -27,7 +25,7 @@ function load()
                 {
                     var app = '<div class="col-sm-6 item">'+
                 '<div class="row">'+
-                    '<div class="col-md-12 col-lg-5"><a href="#"> <img class="img-fluid" src='+ data[i].mcover + '></a></div>'+
+                    '<div class="col-md-12 col-lg-5"><a href=booking.html onclick="setMovie('+data[i].mid+')"> <img class="img-fluid" src='+ data[i].mcover + '></a></div>'+
                    ' <div class="col">'+
                         '<h3 class="name">'+data[i].mname+'</h3>' +
                         '<p class="description">'+data[i].des+'</p>' +
@@ -39,11 +37,16 @@ function load()
                 }
                  
             }
-        })
+        });
 }
 
 function check_user()
 {
-    localStorage.removeItem("id");
+    sessionStorage.removeItem("id");
     remove_tag();
+}
+
+function setMovie(id)
+{
+    sessionStorage.setItem("mid",id);
 }

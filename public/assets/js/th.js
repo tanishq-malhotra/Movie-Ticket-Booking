@@ -2,8 +2,7 @@ var machine = window.location.protocol + "//" + window.location.hostname + ":" +
 
 function remove_tag()
 {
-    var a = localStorage.getItem("id");
-    console.log(a);
+    var a = sessionStorage.getItem("id");
     if(a)
     {
         $("#l").remove();
@@ -39,6 +38,6 @@ function load_m()
 
 function check_user()
 {
-    localStorage.removeItem("id");
+    sessionStorage.removeItem("id");
     remove_tag();
 }
