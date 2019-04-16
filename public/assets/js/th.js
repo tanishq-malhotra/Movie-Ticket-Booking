@@ -18,22 +18,23 @@ function load_m()
 {
     remove_tag();
 
-    /*#.ajax({
-        type:"GET";
-        url: machine + "/get-images",
+    $.ajax({
+        type:"GET",
+        url: machine + "/load-th",
         async:true,
         dataType:"json",
         success: function(data){
         for(var i = 0; i < data.length; i++)
         {
         var app = '<div class="col-sm-6 col-lg-4 item">'+
-            '<img class="img-fluid" src='+data[i].mcover+ '>'
-            '<h3 class="name">'+ {Theater1} + '</h3>'
-            <p class="description">{DES1}</p>
-            </div>
+            '<img class="img-fluid" src='+data[i].tcover+ '>'+
+            '<h3 class="name">'+ data[i].tname + '</h3>' +
+            '<p class="description">{DES1}</p>' +
+            '</div>'
+        $('#ppp').append(app)
         }
     }
-    });*/
+    });
 }
 
 function check_user()
