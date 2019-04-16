@@ -1,4 +1,5 @@
 var machine = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+
 function remove_tag()
 {
     var a = sessionStorage.getItem("id");
@@ -35,15 +36,13 @@ function load_data()
         var ap = '<div class="col-md-4" style="margin-left:16px;">'+
         '<img src='+data[0].mcover+ ' data-bs-hover-animate="pulse" style="width:296px;height:359px;margin-left:-11px;">'+
         '<div class="dropdown" style="margin-top:-1px;">'+
-        '<select class="form-control" style="margin-left:2px;width:150px;margin-top:13px; background-color:rgb(0,123,255); color:white;">'+
-                '<option value="th1">First Item</option>'+
-                '<option value="th1">Second Item</option>'+
-                '<option value="th1">Second Item</option>'+ 
-            '</select>'+
+        '<select class="form-control" id="select" style="margin-left:2px;width:150px;margin-top:13px; background-color:rgb(0,123,255); color:white;">'+
+
+        '</select>'+
 	'</div>'+
         '<button class="btn btn-primary btn-block" style="background-color:rgb(0,123,255);width:95px;margin-top:-40px;margin-left:178px;padding:6px;">Seat Map</button>'+
-        '<input placeholder="Enter Seat Number" style="font-size:18px;margin:2px;margin-bottom:0px;margin-top:42px;">'+
-       ' <button class="btn btn-primary" style="width:114px;height:33px;margin:3px;padding:2px;font-size:22px;margin-left:244px;margin-top:-55px;background-color:rgb(0,123,255);">Book</button>'+
+        '<input placeholder="Enter Seat Number" id="seat" style="font-size:18px;margin:2px;margin-bottom:0px;margin-top:42px;">'+
+       ' <button class="btn btn-primary" onclick="book()" style="width:114px;height:33px;margin:3px;padding:2px;font-size:22px;margin-left:244px;margin-top:-55px;background-color:rgb(0,123,255);">Book</button>'+
     '</div>'+
     '<div class="col-md-4" style="margin-left:190px;">'+
         '<h4>Description</h4>'+
@@ -52,5 +51,112 @@ function load_data()
 
     $("#app").append(ap);
     }
+    });
+
+    load_theaters();
+}
+
+function load_theaters()
+{
+    $.ajax({
+        type: "GET",
+        async:true,
+        url: machine + '/load-th',
+        dataType:"json",
+        success: function(data){
+            for(var i = 0; i < data.length; i++)
+            {
+                var app = '<option value="'+data[i].tname+'">'+data[i].tname+'</option>'
+                $('#select').append(app);
+            }
+        }
+    });
+}
+
+function book()
+{
+    var u_id = sessionStorage.getItem('id');
+    var e = document.getElementById("select");
+    var dropdown_option = e.options[e.selectedIndex].value;
+    var d = {"tname":dropdown_option};
+    if(u_id)
+    {
+        $.ajax({
+            type:"GET",
+            async:true,
+            data: d,
+            url: machine + '/get-th-id',
+            dataType: "json",
+            success: function(data){
+             pre_book(data[0].tid); 
+            }
+        });
+    }
+    else alert("User is not logged on");
+}
+
+function pre_book(tid)
+{
+    var seat_no = document.getElementById('seat').value;
+    var d = {'tid':tid};
+    $.ajax({
+        type:"GET",
+        async:true,
+        data: d,
+        url: machine + '/get-seat',
+        dataType:"json",
+        success:function(data){
+            var seats = data[0].seats;
+            if(seats[seat_no-1]!=1)
+            {
+                if(seat_no>1)
+                {
+                var s = seats[0];
+                for(var i = 1; i < seat_no - 1; i++) s += seats[i];
+                s += '1';
+                for(var i = seat_no; i < 100; i++) s+=seats[i];
+                }
+                else 
+                {
+                    var s = '1';
+                    for(var i = seat_no; i < 100; i++) s+=seats[i];
+                }
+                final_book(s,tid,seat_no);
+            }
+            else alert("Seat is Booked by another user");   
+        }
+    });
+}
+
+function final_book(s,tid,seat_no)
+{
+    var d = {'seats':s,'tid':tid};
+    $.ajax({
+        type:"POST",
+        async:true,
+        data: d,
+        url: machine + '/book-seat',
+        dataType:"text",
+        success:function(data){
+            after_book(tid,seat_no);
+        }
+    });
+}
+
+function after_book(tid,seat_no)
+{
+    mid = sessionStorage.getItem('mid');
+    uid = sessionStorage.getItem('id');
+    var d = {'tid':tid,'sid':seat_no,'uid':uid,'mid':mid};
+
+    $.ajax({
+        type:"POST",
+        async:true,
+        data:d,
+        url: machine + '/commit-book',
+        dataType:"text",
+        success: function(data){
+            alert(data);
+        }
     });
 }
