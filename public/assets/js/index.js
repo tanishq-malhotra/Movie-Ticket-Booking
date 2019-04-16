@@ -34,8 +34,7 @@ function load()
                 '</div>' + '<br>';
 
                 $('#ap').append(app);
-                }
-                 
+                }  
             }
         });
 }
