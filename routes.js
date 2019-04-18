@@ -5,6 +5,14 @@ var path = require("path");
 var router = express.Router();
 var db = require('./database/database');
 var app = express();
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'mooooovieticket@gmail.com',
+        pass: 'Qwerty@123'
+    }
+});
 
 //sign up 
 router.post('/signup', function (req, res) {
@@ -12,9 +20,24 @@ router.post('/signup', function (req, res) {
     '"' + req.body.email + '"' + ',' +
     '"' + req.body.password +'"'+ ',' +
     req.body.user_id + ');'
+
     db.query(qry, function (err, result) {
             if (err) throw err;
-        res.send("submitted");
+
+            var mailOptions = {
+                from: 'mooooovieticket@gmail.com',
+                to: req.body.email,
+                subject: 'User Registered',
+                text: 'Congratulations '+req.body.username+', you are now registered with MoviesTick.'
+              };
+
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                }
+              });
+
+            res.send("done");
         });
 });
 
@@ -109,5 +132,42 @@ router.post('/commit-book', function(req,res){
         if(err) throw err;
         res.send("Seat Booked");
     });
+});
+
+//get movie name
+router.post('/get-mname',function(req,res){
+    var qry = 'select * from movie where mid='+'"'+req.body.mid+'"'+';';
+    db.query(qry,function(err,result){
+        if(err) throw err;
+        if(result.length>0)
+        res.send(result);
+    });
+});
+
+//get user email
+router.post('/get-umail',function(req,res){
+    var qry = 'select * from user where user_id='+'"'+req.body.user_id+'"'+';';
+    db.query(qry,function(err,result){
+        if(err) throw err;
+        if(result.length>0)
+        res.send(result);
+    });
+});
+
+router.post('/book-mail',function(req,res){
+    var mailOptions = {
+        from: 'mooooovieticket@gmail.com',
+        to: req.body.email,
+        subject: 'Ticket Booked',
+        text: 'Your ticket for movie '+req.body.mname+' in '+req.body.tname+' for seat no: '+req.body.sid+' is booked.'
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          res.send("Your ticket is Booked and confirmantion is sent to "+req.body.email);
+        }
+      });
 });
 module.exports = router;
