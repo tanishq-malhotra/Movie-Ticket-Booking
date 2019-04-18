@@ -1,4 +1,5 @@
 var machine = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+
 function sign_up()
 {
     var name = document.getElementsByClassName("form-control")[0].value;
@@ -13,12 +14,6 @@ function sign_up()
         url: machine + "/signup",
         dataType:"text",
         success: function(data){
-            if(data == "submitted")
-            alert("Submitted");
-        document.getElementsByClassName("form-control")[0].value = '';
-        document.getElementsByClassName("form-control")[1].value = '';
-        document.getElementsByClassName("form-control")[2].value = '';
-        document.getElementsByClassName("form-control")[3].value = '';
         }
-    });
+    });   
 }
