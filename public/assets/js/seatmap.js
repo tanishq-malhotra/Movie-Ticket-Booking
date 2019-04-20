@@ -1,5 +1,6 @@
 var machine = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
 
+// set tid in session storage
 var t = sessionStorage.getItem('th');
 var da = {'tname':t};
 $.ajax({
@@ -13,8 +14,24 @@ $.ajax({
     }
 });
 
+// set the mname in session storage
+var mi = sessionStorage.getItem('mid')
+var m = {"mid":mi};
+$.ajax({
+    type:"POST",
+    async:true,
+    data:m,
+    url: machine + '/get-mname',
+    dataType:"json",
+    success: function(data){   
+        sessionStorage.setItem('mname',data[0].mname);
+    }
+});
+
+
 var unbooked = [];
 var booked = [];
+var seats = [];
 
 function remove_tag()
 {
@@ -92,3 +109,109 @@ function update_arr(n)
     }
 }
 
+function book()
+{
+    // email, mid, uid, tid, tname(th), mname
+    if(sessionStorage.getItem("id"))
+    {
+        if(unbooked.length)
+        {
+        var d = {'tid':sessionStorage.getItem('tid')};
+        $.ajax({
+            type:"GET",
+            async:true,
+            data: d,
+            url: machine + '/get-seat',
+            dataType:"json",
+            success:function(data){
+                var str = data[0].seats;
+                for(var i = 0; i < 100; i++)
+                    seats.push(str[i]);
+                
+                for(var i = 0; i < unbooked.length; i++)
+                    seats[unbooked[i]] = '1';
+                
+                partial_commit();
+            }
+        });
+        }
+        else alert("You Haven't Selected any Seats");
+    }
+    else
+    {
+        alert('user is not logged in');
+        window.location.href = machine + '/login.html';
+    }
+}
+
+
+function partial_commit()
+{
+    var seat = seats[0];
+    for(var i = 1; i < seats.length; i++)
+        seat += seats[i];
+    
+    var d = {'seats':seat,'tid':sessionStorage.getItem('tid')};
+    $.ajax({
+        type:"POST",
+        async:true,
+        data: d,
+        url: machine + '/book-seat',
+        dataType:"text",
+        success:function(data){
+           final_commit()
+        }
+    });
+
+}
+
+function final_commit()
+{
+    var tid = sessionStorage.getItem('tid');
+    var uid = sessionStorage.getItem('id');
+    var mid = sessionStorage.getItem('mid');
+
+    for(var i = 0; i < unbooked.length; i++)
+    {
+        var d = {'tid':tid,'sid':unbooked[i],'uid':uid,'mid':mid};
+        $.ajax({
+            type:"POST",
+            async:true,
+            data:d,
+            url: machine + '/commit-booking',
+            dataType:"text",
+            success: function(data){
+            }
+        });
+    }
+
+    sendMail();
+}
+
+function sendMail()
+{
+    var s = unbooked[0];
+    s += ','
+    for(var i = 1; i < unbooked.length-1; i++)
+        s += unbooked[i] + ',';
+    
+    s += unbooked[unbooked.length-1];
+
+    var email = sessionStorage.getItem('email');
+    var tname = sessionStorage.getItem('th');
+    var mname = sessionStorage.getItem('mname');
+
+    var d = {'email':email,'tname':tname,'mname':mname,'sid':s};
+
+    $.ajax({
+        type:"POST",
+        async:true,
+        data:d,
+        url: machine + '/book-mail',
+        dataType:"text",
+        success: function(data){
+            alert(data);
+            window.location.href = machine + '/index.html';
+        }
+    });
+}

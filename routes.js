@@ -108,6 +108,7 @@ router.get('/get-th-id',function(req,res){
     });
 });
 
+// get seats of th accoding to tid
 router.get('/get-seat',function(req,res){
     var qry = 'select * from seats where tid='+req.query.tid+';';
     db.query(qry,function(err,result){
@@ -116,6 +117,7 @@ router.get('/get-seat',function(req,res){
     });
 });
 
+// update seats of th according to tid
 router.post('/book-seat',function(req,res){
     var qry = 'update seats set seats="'+req.body.seats+'" where tid='+req.body.tid+";";
     db.query(qry,function(err,result){
@@ -124,7 +126,8 @@ router.post('/book-seat',function(req,res){
     });
 });
 
-router.post('/commit-book', function(req,res){
+// insert into the booking table
+router.post('/commit-booking', function(req,res){
     var qry = 'insert into booking(tid,sid,uid,mid)'+
     ' values('+req.body.tid+','+req.body.sid+','+req.body.uid+','+req.body.mid+');';
 
@@ -144,16 +147,8 @@ router.post('/get-mname',function(req,res){
     });
 });
 
-//get user email
-router.post('/get-umail',function(req,res){
-    var qry = 'select * from user where user_id='+'"'+req.body.user_id+'"'+';';
-    db.query(qry,function(err,result){
-        if(err) throw err;
-        if(result.length>0)
-        res.send(result);
-    });
-});
 
+// request for email
 router.post('/book-mail',function(req,res){
     var mailOptions = {
         from: 'mooooovieticket@gmail.com',
@@ -165,9 +160,9 @@ router.post('/book-mail',function(req,res){
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);
-        } else {
-          res.send("Your ticket is Booked and confirmantion is sent to "+req.body.email);
-        }
+        } 
       });
+    
+      res.send("Your ticket is Booked and confirmantion is sent to "+req.body.email);
 });
 module.exports = router;

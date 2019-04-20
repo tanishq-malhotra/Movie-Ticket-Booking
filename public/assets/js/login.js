@@ -19,6 +19,7 @@ function login()
        else
        {
         sessionStorage.setItem("id",data);
+        sessionStorage.setItem("email",e);
         window.location.href = machine + "/index.html";
        }
     }
