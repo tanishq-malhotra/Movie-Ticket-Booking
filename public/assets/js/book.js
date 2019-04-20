@@ -35,14 +35,12 @@ function load_data()
     success: function(data){
         var ap = '<div class="col-md-4" style="margin-left:16px;">'+
         '<img src='+data[0].mcover+ ' data-bs-hover-animate="pulse" style="width:296px;height:359px;margin-left:-11px;">'+
-        '<div class="dropdown" style="margin-top:-1px;">'+
-        '<select class="form-control" id="select" style="margin-left:2px;width:150px;margin-top:13px; background-color:rgb(0,123,255); color:white;">'+
-
+        '<div class="dropdown" style="">'+
+        '<select class="form-control" id="select" style="margin-left:2px;width:150px;margin-top:40px; background-color:rgb(0,123,255); color:white;">'+
         '</select>'+
 	'</div>'+
-        '<button class="btn btn-primary btn-block" style="background-color:rgb(0,123,255);width:95px;margin-top:-40px;margin-left:178px;padding:6px;">Seat Map</button>'+
-        '<input placeholder="Enter Seat Number" id="seat" style="font-size:18px;margin:2px;margin-bottom:0px;margin-top:42px;">'+
-       ' <button class="btn btn-primary" onclick="book()" style="width:114px;height:33px;margin:3px;padding:2px;font-size:22px;margin-left:244px;margin-top:-55px;background-color:rgb(0,123,255);">Book</button>'+
+    ' <button class="btn btn-primary" onclick="seatmap()" style="width:95px;height:38px;margin:3px;padding:6px;font-size:18px;margin-left:178px;margin-top:-40px; margin-bottom:10px;background-color:rgb(0,123,255);">Seat Map</button>'+
+        
     '</div>'+
     '<div class="col-md-4" style="margin-left:190px;">'+
         '<h4>Description</h4>'+
@@ -56,6 +54,13 @@ function load_data()
     load_theaters();
 }
 
+function seatmap()
+{
+    var e = document.getElementById("select");
+    var dropdown_option = e.options[e.selectedIndex].value;
+    sessionStorage.setItem('th',dropdown_option);
+    window.location.href = machine + '/seatmap.html';
+}
 function load_theaters()
 {
     $.ajax({
@@ -71,7 +76,19 @@ function load_theaters()
             }
         }
     });
+    
 }
+
+
+
+
+
+
+
+
+
+
+
 
 function book()
 {
@@ -157,7 +174,6 @@ function after_book(tid,seat_no,tname)
         dataType:"text",
         success: function(data){
             sendEmail(tid,tname,mid,seat_no);
-            //alert(data);
         }
     });
 }
