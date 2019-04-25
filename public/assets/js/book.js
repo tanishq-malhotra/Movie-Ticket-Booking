@@ -8,7 +8,7 @@ function remove_tag()
         $("#l").remove();
         $("#s").remove();
         var app = '<span class="navbar-text actions" id="remove">'+
-        '<a class="btn btn-light action-button" role="button" href="index.html" onclick="check_user()">Logout</a>'+
+        '<a class="btn btn-light button" role="button" href="index.html" onclick="check_user()">Logout</a>'+
         '</span>';
         $("#remove").append(app);
     }
@@ -33,14 +33,12 @@ function load_data()
      url: machine + '/book-data',
     dataType:"json",
     success: function(data){
-        var ap = '<div class="col-md-4" style="margin-left:16px;">'+
-        '<img src='+data[0].mcover+ ' data-bs-hover-animate="pulse" style="width:296px;height:359px;margin-left:-11px;">'+
-        '<div class="dropdown" style="">'+
-        '<select class="form-control" id="select" style="margin-left:2px;width:150px;margin-top:40px; background-color:rgb(0,123,255); color:white;">'+
+        var ap = '<div class="col-md-4" style="margin-left:16px; margin-top:14px">'+
+        '<img src='+data[0].mcover+ ' style="width:296px;height:359px;margin-left:-11px;">'+
+        '<select class="form-control" id="select" style="width:150px; background-color:rgb(0,123,255); color:white; margin-top:50px;">'+
         '</select>'+
-	'</div>'+
-    ' <button class="btn btn-primary" onclick="seatmap()" style="width:95px;height:38px;margin:3px;padding:6px;font-size:18px;margin-left:178px;margin-top:-40px; margin-bottom:10px;background-color:rgb(0,123,255);">Seat Map</button>'+
-        
+	
+    ' <button class="btn btn-primary" onclick="seatmap()" style="width:95px;height:38px;margin:3px;padding:6px; font-size:18px;margin-left:178px;margin-top:-38px; margin-bottom:10px;background-color:rgb(0,123,255);">Seat Map</button>'+
     '</div>'+
     '<div class="col-md-4" style="margin-left:190px;">'+
         '<h4>Description</h4>'+

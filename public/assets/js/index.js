@@ -7,7 +7,7 @@ function remove_tag()
         $("#l").remove();
         $("#s").remove();
         var app = '<span class="navbar-text actions" id="remove">'+
-        '<a class="btn btn-light action-button" role="button" href="index.html" onclick="check_user()">Logout</a>'+
+        '<a class="btn btn-light button" role="button" href="index.html" onclick="check_user()">Logout</a>'+
         '</span>';
         $("#remove").append(app);
     }
@@ -24,7 +24,7 @@ function load()
                 for(var i=0;i<data.length;i++)
                 {
                     var app = '<div class="col-sm-6 item">'+
-                '<div class="row">'+
+                    '<div class="row">'+
                     '<div class="col-md-12 col-lg-5"><a href=booking.html onclick="setMovie('+data[i].mid+')"> <img class="img-fluid" src='+ data[i].mcover + '></a></div>'+
                    ' <div class="col">'+
                         '<h3 class="name">'+data[i].mname+'</h3>' +

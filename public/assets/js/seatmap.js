@@ -41,7 +41,7 @@ function remove_tag()
         $("#l").remove();
         $("#s").remove();
         var app = '<span class="navbar-text actions" id="remove">'+
-        '<a class="btn btn-light action-button" role="button" href="index.html" onclick="check_user()">Logout</a>'+
+        '<a class="btn btn-light button"  href="index.html" onclick="check_user()">Logout</a>'+
         '</span>';
         $("#remove").append(app);
     }

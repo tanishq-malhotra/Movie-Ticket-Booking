@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <title>Booking</title>
+    <title>Seat Map</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
+    <link rel="stylesheet" href="assets/css/button.css">
     <link rel="stylesheet" href="assets/css/sidebar.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -12,34 +12,23 @@
 </head>
 
 <body onload="load_map()">
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color:rgba(0,0,0,0.79);">
-      
-        <div class="container"><a class="navbar-brand" href="index.html" style="color:rgb(255,255,255);">MovieTick</a>
-      
-            <button class="navbar-toggler" >
-                <span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span>
-            </button>
-      
-            <div class="collapse navbar-collapse" id="navcol-1">
-      
-                <ul class="nav navbar-nav mr-auto">
-      
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="th.html" style="color:rgb(236,239,241);">Theaters</a></li>
-      
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="search.html" style="color:rgb(234,238,241);">Search</a></li>
-                </ul>
-      
-                <span class="navbar-text actions" id="remove"> 
-                    <a href="login.html" class="login" style="color:rgb(162,208,247);" id="l">Log In</a>
-                    <a class="btn btn-light action-button" role="button" href="signup.html" id="s">Sign Up</a>
-      
-                </span>
-       
-            </div>
-       
-        </div>
+
     
+    <nav class="navbar navbar-expand-md " style="background-color:rgba(0,0,0,0.79);">
+    <div class="container">
+    <a class="navbar-brand" href="index.html" style="color:rgb(255,255,255);">MovieTick</a>
+                                     
+    <ul class="navbar-nav mr-auto">
+    <li><a class="nav-link" href="th.html" style="color:rgb(236,239,241);">Theaters</a></li>
+    <li><a class="nav-link" href="search.html" style="color:rgb(234,238,241);">Search</a></li>
+    </ul>
+                                        
+    <span class="navbar-text " id="remove"> 
+    <a href="login.html" style="color:rgb(162,208,247); margin-right:15px;" id="l">Log In</a>
+    <a class="btn button" href="signup.html" id="s">Sign Up</a>
+    </span>
+                                
+    </div>
     </nav>
 
     <center>
